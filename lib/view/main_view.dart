@@ -23,7 +23,19 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'Nome da Cidade',
+          style: Theme.of(context).textTheme.headline5,
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.favorite, color: Colors.redAccent),
+          ),
+        ],
+      ),
       backgroundColor: baseTheme.backgroundColor,
       body: Center(
         child: PageView(
