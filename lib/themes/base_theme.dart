@@ -26,7 +26,7 @@ TextTheme textTheme = TextTheme(
   headline1: TextStyle(color: Colors.white),
   headline2: TextStyle(color: Colors.white),
   headline3: TextStyle(color: Colors.white),
-  headline4: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+  headline4: TextStyle(color: Colors.white),
   headline5: TextStyle(color: Colors.white),
   headline6: TextStyle(color: Colors.white),
   subtitle1: TextStyle(color: Colors.white),
