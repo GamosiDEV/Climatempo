@@ -23,15 +23,15 @@ ElevatedButtonThemeData elevatedButtonThemeData = ElevatedButtonThemeData(
 );
 
 TextTheme textTheme = TextTheme(
-  headline1: TextStyle(color: Colors.white),
-  headline2: TextStyle(color: Colors.white),
-  headline3: TextStyle(color: Colors.white),
-  headline4: TextStyle(color: Colors.white),
-  headline5: TextStyle(color: Colors.white),
-  headline6: TextStyle(color: Colors.white),
-  subtitle1: TextStyle(color: Colors.white),
-  subtitle2: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-  bodyText1: TextStyle(color: Colors.white),
+  headlineLarge: TextStyle(color: Colors.white, fontSize: 96),
+  headlineMedium: TextStyle(color: Colors.white),
+  headlineSmall: TextStyle(color: Colors.white),
+  bodySmall: TextStyle(color: Colors.white),
+  bodyMedium: TextStyle(color: Colors.white, fontSize: 16),
+  bodyLarge: TextStyle(color: Colors.white),
+  titleSmall: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+  titleMedium: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+  titleLarge: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
 );
 
 IconThemeData unselectedIconThemeData = IconThemeData(

@@ -18,7 +18,7 @@ class SearchView extends StatelessWidget {
             controller: _searchTextController,
             onSubmitted: (value) {},
             decoration: InputDecoration(
-                hintStyle: Theme.of(context).textTheme.subtitle1,
+                hintStyle: Theme.of(context).textTheme.bodyMedium,
                 prefixIcon: Icon(Icons.search,
                     color: Theme.of(context).iconTheme.color),
                 border: OutlineInputBorder(
@@ -48,11 +48,13 @@ class SearchView extends StatelessWidget {
                               children: [
                                 Text(
                                   'Cidade',
-                                  style: Theme.of(context).textTheme.headline5,
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
                                 ),
                                 Text(
                                   'Estado',
-                                  style: Theme.of(context).textTheme.headline6,
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
                                 ),
                               ],
                             ),

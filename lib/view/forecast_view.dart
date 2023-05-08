@@ -23,7 +23,7 @@ class ForecastView extends StatelessWidget {
                       children: [
                         Text(
                           '35°',
-                          style: Theme.of(context).textTheme.headline1,
+                          style: Theme.of(context).textTheme.headlineLarge,
                         ),
                         Spacer(),
                         Icon(
@@ -39,7 +39,7 @@ class ForecastView extends StatelessWidget {
                           Icon(Icons.cloud_circle),
                           Text(
                             'Levemente nublado',
-                            style: Theme.of(context).textTheme.subtitle1,
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ],
                       ),
@@ -51,7 +51,7 @@ class ForecastView extends StatelessWidget {
                           Icon(Icons.water_drop),
                           Text(
                             '46%',
-                            style: Theme.of(context).textTheme.subtitle1,
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ],
                       ),
@@ -63,7 +63,7 @@ class ForecastView extends StatelessWidget {
                           Icon(Icons.lock_clock),
                           Text(
                             '14:29',
-                            style: Theme.of(context).textTheme.subtitle1,
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ],
                       ),
@@ -96,12 +96,12 @@ class ForecastView extends StatelessWidget {
                                   Text(
                                     "Min",
                                     style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                        Theme.of(context).textTheme.titleSmall,
                                   ),
                                   Text(
                                     "10°",
                                     style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                        Theme.of(context).textTheme.titleSmall,
                                   ),
                                 ],
                               ),
@@ -114,12 +114,12 @@ class ForecastView extends StatelessWidget {
                                   Text(
                                     "Max",
                                     style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                        Theme.of(context).textTheme.titleSmall,
                                   ),
                                   Text(
                                     "30°",
                                     style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                        Theme.of(context).textTheme.titleSmall,
                                   ),
                                 ],
                               ),
@@ -134,7 +134,7 @@ class ForecastView extends StatelessWidget {
                           padding: const EdgeInsets.all(0.0),
                           child: Text(
                             '15:30',
-                            style: Theme.of(context).textTheme.subtitle1,
+                            style: Theme.of(context).textTheme.titleSmall,
                           ),
                         ),
                       ],
@@ -156,7 +156,7 @@ class ForecastView extends StatelessWidget {
                   Text(
                     "24/04/2023",
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline5,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -166,14 +166,14 @@ class ForecastView extends StatelessWidget {
                         Icon(Icons.arrow_upward, color: Colors.red),
                         Text(
                           '30°',
-                          style: Theme.of(context).textTheme.headline5,
+                          style: Theme.of(context).textTheme.headlineMedium,
                         ),
                         Spacer(),
                         Icon(Icons.arrow_downward,
                             color: Color.fromRGBO(15, 255, 205, 1)),
                         Text(
                           '10°',
-                          style: Theme.of(context).textTheme.headline5,
+                          style: Theme.of(context).textTheme.headlineMedium,
                         ),
                         Spacer(),
                       ],
@@ -187,7 +187,7 @@ class ForecastView extends StatelessWidget {
                         Icon(Icons.cloud),
                         Text(
                           'Probabilidade de Nuvens',
-                          style: Theme.of(context).textTheme.subtitle1,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
                     ),
@@ -199,7 +199,7 @@ class ForecastView extends StatelessWidget {
                         Icon(Icons.circle),
                         Text(
                           'Feels Like',
-                          style: Theme.of(context).textTheme.subtitle1,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
                     ),
@@ -211,7 +211,7 @@ class ForecastView extends StatelessWidget {
                         Icon(Icons.thunderstorm),
                         Text(
                           'Probabilidade de Tempestades',
-                          style: Theme.of(context).textTheme.subtitle1,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
                     ),
@@ -223,7 +223,7 @@ class ForecastView extends StatelessWidget {
                         Icon(Icons.wind_power),
                         Text(
                           'Ventos há 10km/h - N',
-                          style: Theme.of(context).textTheme.subtitle1,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
                     ),

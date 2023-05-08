@@ -27,7 +27,7 @@ class _MainViewState extends State<MainView> {
         centerTitle: true,
         title: Text(
           'Nome da Cidade',
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
         actions: [
           IconButton(
