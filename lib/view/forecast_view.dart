@@ -170,7 +170,7 @@ class ForecastView extends StatelessWidget {
                         ),
                         Spacer(),
                         Icon(Icons.arrow_downward,
-                            color: Colors.lightGreenAccent),
+                            color: Color.fromRGBO(15, 255, 205, 1)),
                         Text(
                           '10°',
                           style: Theme.of(context).textTheme.headline5,
