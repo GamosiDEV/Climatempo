@@ -17,6 +17,7 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   int _selectedTab = 0;
+  String title = '';
 
   PageController _pageController = PageController(initialPage: 0);
 
@@ -26,7 +27,7 @@ class _MainViewState extends State<MainView> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'Nome da Cidade',
+          title,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         actions: [
@@ -37,22 +38,20 @@ class _MainViewState extends State<MainView> {
         ],
       ),
       backgroundColor: baseTheme.backgroundColor,
-      body: Center(
-        child: PageView(
-          controller: _pageController,
-          onPageChanged: (value) {
-            setState(() {
-              _selectedTab = value;
-            });
-          },
-          children: [
-            ForecastView(),
-            NextDaysView(),
-            SearchView(),
-            FavoritesView(),
-            AboutView(),
-          ],
-        ),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (value) {
+          setState(() {
+            _selectedTab = value;
+          });
+        },
+        children: [
+          ForecastView(),
+          NextDaysView(),
+          SearchView(),
+          FavoritesView(),
+          AboutView(),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         selectedIconTheme: selectedIconThemeData,
@@ -92,6 +91,24 @@ class _MainViewState extends State<MainView> {
         duration: const Duration(milliseconds: 500),
         curve: Curves.ease,
       );
+
+      switch (index) {
+        case 0:
+          title = 'Cidade';
+          break;
+        case 1:
+          title = 'Cidade dias';
+          break;
+        case 2:
+          title = 'Buscar';
+          break;
+        case 3:
+          title = 'Favoritos';
+          break;
+        case 4:
+          title = 'Sobre';
+          break;
+      }
       _selectedTab = index;
     });
   }

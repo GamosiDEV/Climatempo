@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 ThemeData baseTheme = ThemeData(
@@ -32,6 +34,8 @@ TextTheme textTheme = TextTheme(
   titleSmall: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
   titleMedium: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
   titleLarge: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+  displaySmall: TextStyle(
+      fontWeight: FontWeight.bold, fontSize: 32, color: Colors.lightBlueAccent),
 );
 
 IconThemeData unselectedIconThemeData = IconThemeData(
