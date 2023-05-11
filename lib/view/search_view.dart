@@ -6,7 +6,13 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class SearchView extends StatefulWidget {
-  SearchView({super.key});
+  final ValueSetter<CityModel> setSelectedCityCallback;
+  final ValueSetter<int> changeScreenCallback;
+
+  SearchView(
+      {super.key,
+      required this.setSelectedCityCallback,
+      required this.changeScreenCallback});
 
   @override
   State<SearchView> createState() => _SearchViewState();
@@ -69,7 +75,9 @@ class _SearchViewState extends State<SearchView> {
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () {
-                        print('click - ' + index.toString());
+                        widget.setSelectedCityCallback(
+                            listOfSearchedCitys[index]);
+                        widget.changeScreenCallback(0);
                       },
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

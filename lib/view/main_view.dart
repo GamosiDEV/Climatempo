@@ -1,3 +1,4 @@
+import 'package:climatempo/model/city_model.dart';
 import 'package:climatempo/themes/base_theme.dart';
 import 'package:climatempo/view/about_view.dart';
 import 'package:climatempo/view/favorites_view.dart';
@@ -21,6 +22,8 @@ class _MainViewState extends State<MainView> {
 
   PageController _pageController = PageController(initialPage: 0);
 
+  CityModel? selectedCity;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +31,7 @@ class _MainViewState extends State<MainView> {
         centerTitle: true,
         title: Text(
           title,
-          style: Theme.of(context).textTheme.headlineMedium,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         actions: [
           IconButton(
@@ -40,15 +43,13 @@ class _MainViewState extends State<MainView> {
       backgroundColor: baseTheme.backgroundColor,
       body: PageView(
         controller: _pageController,
-        onPageChanged: (value) {
-          setState(() {
-            _selectedTab = value;
-          });
-        },
+        onPageChanged: changeSelectedTab,
         children: [
-          ForecastView(),
+          ForecastView(actualCity: selectedCity),
           NextDaysView(),
-          SearchView(),
+          SearchView(
+              setSelectedCityCallback: setSelectedCity,
+              changeScreenCallback: _onTabItemTapped),
           FavoritesView(),
           AboutView(),
         ],
@@ -94,7 +95,13 @@ class _MainViewState extends State<MainView> {
 
       switch (index) {
         case 0:
-          title = 'Cidade';
+          title = selectedCity?.name != null
+              ? selectedCity?.name +
+                  " - " +
+                  selectedCity?.state +
+                  " - " +
+                  selectedCity?.country
+              : 'Cidade';
           break;
         case 1:
           title = 'Cidade dias';
@@ -109,6 +116,16 @@ class _MainViewState extends State<MainView> {
           title = 'Sobre';
           break;
       }
+      _selectedTab = index;
+    });
+  }
+
+  setSelectedCity(CityModel _selectedCity) {
+    selectedCity = _selectedCity;
+  }
+
+  changeSelectedTab(int index) {
+    setState(() {
       _selectedTab = index;
     });
   }

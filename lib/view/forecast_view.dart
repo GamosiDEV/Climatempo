@@ -1,11 +1,19 @@
+import 'package:climatempo/model/city_model.dart';
 import 'package:flutter/material.dart';
 import 'package:climatempo/view/location_not_found.view.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class ForecastView extends StatelessWidget {
-  const ForecastView({super.key});
+class ForecastView extends StatefulWidget {
+  final CityModel? actualCity;
 
+  const ForecastView({super.key, required this.actualCity});
+
+  @override
+  State<ForecastView> createState() => _ForecastViewState();
+}
+
+class _ForecastViewState extends State<ForecastView> {
   @override
   Widget build(BuildContext context) {
     var maxItemCount = 10;
