@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class LocaionNotFoundView extends StatelessWidget {
-  const LocaionNotFoundView({super.key});
+class LocationNotFoundView extends StatelessWidget {
+  const LocationNotFoundView({super.key});
 
   @override
   Widget build(BuildContext context) {
