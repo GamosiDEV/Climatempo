@@ -153,7 +153,7 @@ class _ForecastViewState extends State<ForecastView> {
                           ],
                         ),
                       ),
-                      weatherReport.actualWeather.rain == "0"
+                      weatherReport.actualWeather.rain1h == "0"
                           ? Container()
                           : Padding(
                               padding: const EdgeInsets.all(4.0),
@@ -162,7 +162,23 @@ class _ForecastViewState extends State<ForecastView> {
                                   Icon(Icons.water_sharp),
                                   Text(
                                     " Millimitros chovidos na ultima hora: " +
-                                        weatherReport.actualWeather.rain,
+                                        weatherReport.actualWeather.rain1h,
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                ],
+                              ),
+                            ),
+                      weatherReport.actualWeather.rain3h == "0"
+                          ? Container()
+                          : Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.water_sharp),
+                                  Text(
+                                    " Millimitros chovidos nas ultimas 3 horas: " +
+                                        weatherReport.actualWeather.rain3h,
                                     style:
                                         Theme.of(context).textTheme.bodyMedium,
                                   ),
