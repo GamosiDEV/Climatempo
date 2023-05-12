@@ -1,9 +1,11 @@
 import 'package:climatempo/controller/forecast_controller.dart';
 import 'package:climatempo/model/city_model.dart';
+import 'package:climatempo/model/weather_model.dart';
 import 'package:flutter/material.dart';
 import 'package:climatempo/view/location_not_found.view.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:intl/intl.dart';
 
 class ForecastView extends StatefulWidget {
   final CityModel? actualCity;
@@ -61,60 +63,23 @@ class _ForecastViewState extends State<ForecastView> {
                       Row(
                         children: [
                           Text(
-                            weatherReport.actualWeather.temperature.toString() +
-                                "°",
+                            weatherReport.actualWeather.temperature,
                             style: Theme.of(context).textTheme.headlineLarge,
                           ),
                           Spacer(),
-                          Icon(
-                            Icons.cloud,
+                          ImageIcon(
+                            weatherReport.actualWeather.icon,
                             size: MediaQuery.of(context).size.width * 0.25,
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Row(
-                          children: [
-                            Icon(Icons.cloud_circle),
-                            Text(
-                              weatherReport.actualWeather.clouds.toString(),
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Row(
-                          children: [
-                            Icon(Icons.water_drop),
-                            Text(
-                              weatherReport.actualWeather.humidity.toString(),
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Row(
-                          children: [
-                            Icon(Icons.lock_clock),
-                            Text(
-                              weatherReport.actualWeather.dateTime.hour
-                                      .toString() +
-                                  ":" +
-                                  weatherReport.actualWeather.dateTime.minute
-                                      .toString(),
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ],
-                        ),
-                      ),
+                      Divider(thickness: 2),
                       Text(
                         weatherReport.actualWeather.dateTime.day.toString() +
                             "/" +
+                            ((weatherReport.actualWeather.dateTime.month < 10)
+                                ? "0"
+                                : "") +
                             weatherReport.actualWeather.dateTime.month
                                 .toString() +
                             "/" +
@@ -126,20 +91,50 @@ class _ForecastViewState extends State<ForecastView> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          weatherReport.actualWeather.dateTime.weekday
-                              .toString(),
+                          WeatherModel().weekdays[
+                              weatherReport.actualWeather.dateTime.weekday],
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headlineMedium,
                         ),
                       ),
                       Divider(thickness: 2),
                       Padding(
-                        padding: const EdgeInsets.all(4.0),
+                        padding: const EdgeInsets.all(2.0),
                         child: Row(
                           children: [
-                            Icon(Icons.cloud),
+                            Icon(Icons.cloud_circle),
                             Text(
-                              weatherReport.actualWeather.sky,
+                              " " +
+                                  weatherReport.actualWeather.clouds +
+                                  " de nuvens",
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Row(
+                          children: [
+                            Icon(Icons.water_drop),
+                            Text(
+                              " " +
+                                  weatherReport.actualWeather.humidity +
+                                  " de humidade",
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Row(
+                          children: [
+                            Icon(Icons.lock_clock),
+                            Text(
+                              " " +
+                                  DateFormat.Hm().format(
+                                      weatherReport.actualWeather.dateTime),
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ],
@@ -149,21 +144,39 @@ class _ForecastViewState extends State<ForecastView> {
                         padding: const EdgeInsets.all(4.0),
                         child: Row(
                           children: [
-                            Icon(Icons.thunderstorm),
+                            Icon(Icons.cloud),
                             Text(
-                              weatherReport.actualWeather.description,
+                              " O tempo esta: " +
+                                  weatherReport.actualWeather.sky,
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ],
                         ),
                       ),
+                      weatherReport.actualWeather.rain == "0"
+                          ? Container()
+                          : Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.water_sharp),
+                                  Text(
+                                    " Millimitros chovidos na ultima hora: " +
+                                        weatherReport.actualWeather.rain,
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                ],
+                              ),
+                            ),
                       Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Row(
                           children: [
                             Icon(Icons.circle),
                             Text(
-                              weatherReport.actualWeather.feelsLike.toString(),
+                              " Sensação termica de " +
+                                  weatherReport.actualWeather.feelsLike,
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ],
@@ -175,12 +188,10 @@ class _ForecastViewState extends State<ForecastView> {
                           children: [
                             Icon(Icons.wind_power),
                             Text(
-                              'Ventos de ' +
-                                  weatherReport.actualWeather.windSpeed
-                                      .toString() +
-                                  "Km/H - " +
-                                  weatherReport.actualWeather.windDegree
-                                      .toString(),
+                              " Ventos de " +
+                                  weatherReport.actualWeather.windSpeed +
+                                  " - " +
+                                  weatherReport.actualWeather.windDegree,
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ],

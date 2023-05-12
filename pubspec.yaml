@@ -40,6 +40,7 @@ dependencies:
   http: ^0.13.5
   fluttertoast: ^8.2.1
   marquee: ^2.2.3
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +64,8 @@ flutter:
         - asset: lib/assets/fonts/Montserrat-Regular.ttf
         - asset: lib/assets/fonts/Montserrat-Italic.ttf
         - asset: lib/assets/fonts/Montserrat-Bold.ttf
+  assets:
+    - lib/assets/icons/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
