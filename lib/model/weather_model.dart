@@ -50,7 +50,8 @@ class WeatherModel {
       this.dateTime,
       this.icon = const AssetImage("lib/assets/icons/01d.png")});
 
-  factory WeatherModel.fromJsonForWeather(Map<String, dynamic> json) {
+  factory WeatherModel.fromJsonForWeather(
+      Map<String, dynamic> json, int timezone) {
     return WeatherModel(
       temperature:
           ((json['main']['temp'] - 273.1).toStringAsFixed(0)).toString() + "°",
@@ -72,7 +73,8 @@ class WeatherModel {
           .windDirections[((json['wind']['deg'] / 45) % 8).round()],
       rain1h: json['rain'] != null ? json['rain']['1h'].toString() : "0",
       rain3h: json['rain'] != null ? json['rain']['3h'].toString() : "0",
-      dateTime: DateTime.fromMillisecondsSinceEpoch(json['dt'] * 1000),
+      dateTime:
+          DateTime.fromMillisecondsSinceEpoch((json['dt'] + timezone) * 1000),
       icon:
           AssetImage("lib/assets/icons/" + json['weather'][0]['icon'] + ".png"),
     );

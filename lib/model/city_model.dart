@@ -39,15 +39,15 @@ class CityModel {
         timezone: json['timezone'],
         latitude: json['coord']['lat'],
         longitude: json['coord']['lon'],
-        actualWeather: WeatherModel.fromJsonForWeather(json),
+        actualWeather: WeatherModel.fromJsonForWeather(json, json['timezone']),
         nextDays: []);
   }
 
   factory CityModel.fromJsonForNextDays(Map<String, dynamic> json) {
     List<WeatherModel> listOfWeathersForNextDays = [];
     for (var weatherPerHour in json['list']) {
-      listOfWeathersForNextDays
-          .add(WeatherModel.fromJsonForWeather(weatherPerHour));
+      listOfWeathersForNextDays.add(WeatherModel.fromJsonForWeather(
+          weatherPerHour, json['city']['timezone']));
     }
     return CityModel(
         name: json['city']['name'],
