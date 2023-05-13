@@ -12,7 +12,10 @@ class ApiController {
       "https://api.openweathermap.org/data/2.5/weather?";
   static final LATITUDE = "lat=";
   static final LONGITUDE = "lon=";
+  static final NEXT_DAYS_WEATHER =
+      "https://api.openweathermap.org/data/2.5/forecast?";
 
+  //lat={lat}&lon={lon}&appid={API key}
   Future<http.Response> getApiDataByString(String uri) async {
     return await http.get(Uri.parse(uri));
   }
@@ -38,6 +41,19 @@ class ApiController {
         "&" +
         API_KEY);
     actualCity = CityModel.fromJsonForWeather(jsonDecode(response.body));
+    return actualCity;
+  }
+
+  Future<CityModel> getNextDaysWeatherByCity(CityModel actualCity) async {
+    final response = await getApiDataByString(NEXT_DAYS_WEATHER +
+        LATITUDE +
+        actualCity.latitude.toString() +
+        "&" +
+        LONGITUDE +
+        actualCity.longitude.toString() +
+        "&" +
+        API_KEY);
+    actualCity = CityModel.fromJsonForNextDays(jsonDecode(response.body));
     return actualCity;
   }
 }

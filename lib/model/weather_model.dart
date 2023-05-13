@@ -16,13 +16,13 @@ class WeatherModel {
   AssetImage icon;
 
   List weekdays = [
-    'Domingo',
     "Segunda-Feira",
     'Terça-Feira',
     'Quarta-Feira',
     'Quinta-Feira',
     'Sexta-Feira',
     'Sabado',
+    'Domingo',
   ];
   List windDirections = [
     '↑ N',

@@ -5,12 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:climatempo/view/location_not_found.view.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:intl/intl.dart';
+import 'package:date_format/date_format.dart';
 
 class ForecastView extends StatefulWidget {
   final CityModel? actualCity;
+  final ValueSetter<CityModel> updateSelectedCityCallback;
 
-  const ForecastView({super.key, required this.actualCity});
+  const ForecastView({
+    super.key,
+    required this.actualCity,
+    required this.updateSelectedCityCallback,
+  });
 
   @override
   State<ForecastView> createState() => _ForecastViewState();
@@ -75,16 +80,8 @@ class _ForecastViewState extends State<ForecastView> {
                       ),
                       Divider(thickness: 2),
                       Text(
-                        weatherReport.actualWeather.dateTime.day.toString() +
-                            "/" +
-                            ((weatherReport.actualWeather.dateTime.month < 10)
-                                ? "0"
-                                : "") +
-                            weatherReport.actualWeather.dateTime.month
-                                .toString() +
-                            "/" +
-                            weatherReport.actualWeather.dateTime.year
-                                .toString(),
+                        formatDate(weatherReport.actualWeather.dateTime,
+                            [dd, '/', mm, '/', yyyy]),
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
@@ -92,7 +89,7 @@ class _ForecastViewState extends State<ForecastView> {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           WeatherModel().weekdays[
-                              weatherReport.actualWeather.dateTime.weekday],
+                              weatherReport.actualWeather.dateTime.weekday - 1],
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headlineMedium,
                         ),
@@ -133,8 +130,9 @@ class _ForecastViewState extends State<ForecastView> {
                             Icon(Icons.lock_clock),
                             Text(
                               " " +
-                                  DateFormat.Hm().format(
-                                      weatherReport.actualWeather.dateTime),
+                                  formatDate(
+                                      weatherReport.actualWeather.dateTime,
+                                      [HH, ':', nn]),
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ],
@@ -225,8 +223,10 @@ class _ForecastViewState extends State<ForecastView> {
   }
 
   getWeatherForSelectedCity() async {
-    selectedCityWeather = Future.value(await _forecastController
-        .getWeatherForSelectedCity(widget.actualCity as CityModel));
+    CityModel response = await _forecastController
+        .getWeatherForSelectedCity(widget.actualCity as CityModel);
+    selectedCityWeather = Future.value(response);
+    widget.updateSelectedCityCallback(response);
     setState(() {});
   }
 }

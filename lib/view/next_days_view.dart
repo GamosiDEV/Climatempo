@@ -1,20 +1,61 @@
+import 'package:climatempo/controller/next_days_controller.dart';
+import 'package:climatempo/model/city_model.dart';
+import 'package:climatempo/model/weather_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:date_format/date_format.dart';
 
-class NextDaysView extends StatelessWidget {
-  const NextDaysView({super.key});
+class NextDaysView extends StatefulWidget {
+  final CityModel? actualCity;
+  final ValueSetter<CityModel> updateSelectedCityCallback;
+
+  const NextDaysView({
+    super.key,
+    required this.actualCity,
+    required this.updateSelectedCityCallback,
+  });
+
+  @override
+  State<NextDaysView> createState() => _NextDaysViewState();
+}
+
+class _NextDaysViewState extends State<NextDaysView> {
+  NextDaysController _nextDaysController = NextDaysController();
+
+  Future<CityModel>? selectedCityNextDaysWeather;
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.actualCity != null) {
+        getSelectedCityWeatherForNextDays();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    int maxItemCount = 10;
     return Container(
       padding: EdgeInsets.all(8),
       child: FutureBuilder(
-        future: null,
+        future: selectedCityNextDaysWeather,
         builder: (context, snapshot) {
+          if (!snapshot.hasData ||
+              snapshot.hasError ||
+              snapshot.connectionState != ConnectionState.done ||
+              snapshot == null) {
+            return const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          CityModel nextDaysReport = snapshot.data as CityModel;
           return ListView.builder(
-            itemCount: maxItemCount,
+            itemCount: nextDaysReport.nextDays.length,
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
             itemBuilder: (context, index) {
@@ -36,12 +77,16 @@ class NextDaysView extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    '15:55',
+                                    formatDate(
+                                        nextDaysReport.nextDays[index].dateTime,
+                                        [HH, ':', nn]),
                                     style:
                                         Theme.of(context).textTheme.bodyMedium,
                                   ),
                                   Text(
-                                    '25/08/23',
+                                    formatDate(
+                                        nextDaysReport.nextDays[index].dateTime,
+                                        [dd, '/', mm, '/', yyyy]),
                                     style:
                                         Theme.of(context).textTheme.bodyMedium,
                                   ),
@@ -50,7 +95,9 @@ class NextDaysView extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
                                 child: Text(
-                                  'Domingo',
+                                  WeatherModel().weekdays[nextDaysReport
+                                          .nextDays[index].dateTime.weekday -
+                                      1],
                                   style: Theme.of(context).textTheme.titleSmall,
                                 ),
                               ),
@@ -62,7 +109,7 @@ class NextDaysView extends StatelessWidget {
                                   children: [
                                     Icon(Icons.water_drop),
                                     Text(
-                                      '10%',
+                                      nextDaysReport.nextDays[index].humidity,
                                       style: Theme.of(context)
                                           .textTheme
                                           .headlineSmall,
@@ -76,12 +123,17 @@ class NextDaysView extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      '30°',
+                                      nextDaysReport
+                                          .nextDays[index].temperature,
                                       style: Theme.of(context)
                                           .textTheme
                                           .headlineSmall,
                                     ),
-                                    Icon(Icons.cloud),
+                                    ImageIcon(
+                                      nextDaysReport.nextDays[index].icon,
+                                      size: MediaQuery.of(context).size.width *
+                                          0.10,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -99,5 +151,13 @@ class NextDaysView extends StatelessWidget {
         },
       ),
     );
+  }
+
+  getSelectedCityWeatherForNextDays() async {
+    CityModel response = await _nextDaysController
+        .getWeatherForSelectedCity(widget.actualCity as CityModel);
+    selectedCityNextDaysWeather = Future.value(response);
+    widget.updateSelectedCityCallback(response);
+    setState(() {});
   }
 }
