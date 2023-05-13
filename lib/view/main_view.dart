@@ -45,11 +45,17 @@ class _MainViewState extends State<MainView> {
         controller: _pageController,
         onPageChanged: changeSelectedTab,
         children: [
-          ForecastView(actualCity: selectedCity),
-          NextDaysView(),
+          ForecastView(
+            actualCity: selectedCity,
+            updateSelectedCityCallback: setSelectedCity,
+          ),
+          NextDaysView(
+            actualCity: selectedCity,
+            updateSelectedCityCallback: setSelectedCity,
+          ),
           SearchView(
               setSelectedCityCallback: setSelectedCity,
-              changeScreenCallback: _onTabItemTapped),
+              changeScreenCallback: _changeScreenWithoutAnimation),
           FavoritesView(),
           AboutView(),
         ],
@@ -92,32 +98,43 @@ class _MainViewState extends State<MainView> {
         duration: const Duration(milliseconds: 500),
         curve: Curves.ease,
       );
-
-      switch (index) {
-        case 0:
-          title = selectedCity?.name != null
-              ? selectedCity?.name +
-                  " - " +
-                  selectedCity?.state +
-                  " - " +
-                  selectedCity?.country
-              : 'Cidade';
-          break;
-        case 1:
-          title = 'Cidade dias';
-          break;
-        case 2:
-          title = 'Buscar';
-          break;
-        case 3:
-          title = 'Favoritos';
-          break;
-        case 4:
-          title = 'Sobre';
-          break;
-      }
+      _changeTitle(index);
       _selectedTab = index;
     });
+  }
+
+  void _changeScreenWithoutAnimation(index) {
+    setState(() {
+      _pageController.jumpToPage(index);
+
+      _changeTitle(index);
+      _selectedTab = index;
+    });
+  }
+
+  void _changeTitle(index) {
+    switch (index) {
+      case 0:
+      case 1:
+        title = selectedCity?.name == null
+            ? 'Cidade'
+            : selectedCity?.name +
+                (selectedCity?.state == null
+                    ? ""
+                    : (" - " + selectedCity?.state)) +
+                " - " +
+                selectedCity?.country;
+        break;
+      case 2:
+        title = 'Buscar';
+        break;
+      case 3:
+        title = 'Favoritos';
+        break;
+      case 4:
+        title = 'Sobre';
+        break;
+    }
   }
 
   setSelectedCity(CityModel _selectedCity) {

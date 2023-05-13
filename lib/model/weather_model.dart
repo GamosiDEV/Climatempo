@@ -10,18 +10,19 @@ class WeatherModel {
   var clouds;
   var windSpeed;
   var windDegree;
-  var rain;
+  var rain1h;
+  var rain3h;
   var dateTime;
   AssetImage icon;
 
   List weekdays = [
-    'Domingo',
     "Segunda-Feira",
     'Terça-Feira',
     'Quarta-Feira',
     'Quinta-Feira',
     'Sexta-Feira',
     'Sabado',
+    'Domingo',
   ];
   List windDirections = [
     '↑ N',
@@ -44,11 +45,13 @@ class WeatherModel {
       this.clouds,
       this.windSpeed,
       this.windDegree,
-      this.rain,
+      this.rain1h,
+      this.rain3h,
       this.dateTime,
       this.icon = const AssetImage("lib/assets/icons/01d.png")});
 
-  factory WeatherModel.fromJsonForWeather(Map<String, dynamic> json) {
+  factory WeatherModel.fromJsonForWeather(
+      Map<String, dynamic> json, int timezone) {
     return WeatherModel(
       temperature:
           ((json['main']['temp'] - 273.1).toStringAsFixed(0)).toString() + "°",
@@ -62,18 +65,16 @@ class WeatherModel {
           ((json['main']['temp_max'] - 273.1).toStringAsFixed(0)).toString() +
               "°",
       humidity: json['main']['humidity'].toString() + "%",
-
+      sky: WeatherModel().skySituation(json['weather'][0]['id']),
       clouds: json['clouds']['all'].toString() + "%",
       windSpeed: ((json['wind']['speed'] * 3.6).toStringAsFixed(2)).toString() +
           "Km/H",
       windDegree: WeatherModel()
           .windDirections[((json['wind']['deg'] / 45) % 8).round()],
-      rain: json['rain'] != null ? json['rain']['1h'].toString() : "0",
-      dateTime: DateTime.fromMillisecondsSinceEpoch(json['dt'] * 1000),
-
-      //baseado nos codigos setar: icone/situação/descrição
-      sky: WeatherModel().skySituation(json['weather'][0]['id']),
-
+      rain1h: json['rain'] != null ? json['rain']['1h'].toString() : "0",
+      rain3h: json['rain'] != null ? json['rain']['3h'].toString() : "0",
+      dateTime:
+          DateTime.fromMillisecondsSinceEpoch((json['dt'] + timezone) * 1000),
       icon:
           AssetImage("lib/assets/icons/" + json['weather'][0]['icon'] + ".png"),
     );
