@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:climatempo/model/city_model.dart';
 import 'package:climatempo/themes/base_theme.dart';
 import 'package:climatempo/view/about_view.dart';
@@ -8,6 +11,8 @@ import 'package:climatempo/view/search_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -19,10 +24,27 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   int _selectedTab = 0;
   String title = '';
+  bool asPermissionGaranted = false;
+
+  List<CityModel> listOfFavoriteCities = [];
 
   PageController _pageController = PageController(initialPage: 0);
 
   CityModel? selectedCity;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _readData().then((data) {
+        if (data != null) {
+          listOfFavoriteCities = jsonDecode(data);
+        }
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +56,17 @@ class _MainViewState extends State<MainView> {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.favorite, color: Colors.redAccent),
-          ),
+          _selectedTab > 1 || selectedCity == null
+              ? Container()
+              : asSelectedCityFavorited()
+                  ? IconButton(
+                      onPressed: removeSelectedCityFromFavorites,
+                      icon: Icon(Icons.favorite, color: Colors.redAccent),
+                    )
+                  : IconButton(
+                      onPressed: saveSelectedCityAsFavorite,
+                      icon: Icon(Icons.favorite),
+                    )
         ],
       ),
       backgroundColor: baseTheme.backgroundColor,
@@ -145,5 +174,72 @@ class _MainViewState extends State<MainView> {
     setState(() {
       _selectedTab = index;
     });
+  }
+
+  bool asSelectedCityFavorited() {
+    for (CityModel city in listOfFavoriteCities) {
+      if (selectedCity?.latitude == city.latitude &&
+          selectedCity?.latitude != null &&
+          selectedCity?.longitude == city.longitude &&
+          selectedCity?.longitude != null) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  onFavoriteButtonPressed() {}
+
+  saveSelectedCityAsFavorite() {
+    if (selectedCity?.latitude != null && selectedCity?.longitude != null) {
+      listOfFavoriteCities.add(selectedCity as CityModel);
+      setState(() {
+        _saveFavoritesData();
+      });
+    }
+  }
+
+  removeSelectedCityFromFavorites() {
+    for (CityModel city in listOfFavoriteCities) {
+      if (selectedCity?.latitude == city.latitude &&
+          selectedCity?.latitude != null &&
+          selectedCity?.longitude == city.longitude &&
+          selectedCity?.longitude != null) {
+        listOfFavoriteCities.remove(city);
+        setState(() {
+          _saveFavoritesData();
+        });
+      }
+    }
+  }
+
+  Future<File> _getFile() async {
+    final directory = await getApplicationDocumentsDirectory();
+    return File("${directory.path}/data.json");
+  }
+
+  Future<File?> _saveFavoritesData() async {
+    PermissionStatus permission = await Permission.storage.request();
+    if (permission.isGranted) {
+      String data = jsonEncode(listOfFavoriteCities);
+
+      final file = await _getFile();
+      return file.writeAsString(data);
+    }
+    return null;
+  }
+
+  Future<String?> _readData() async {
+    try {
+      PermissionStatus permission = await Permission.storage.request();
+      if (permission.isGranted) {
+        final file = await _getFile();
+
+        return file.readAsString();
+      }
+    } catch (e) {
+      return null;
+    }
+    return null;
   }
 }
