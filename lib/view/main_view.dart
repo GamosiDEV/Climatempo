@@ -40,7 +40,8 @@ class _MainViewState extends State<MainView> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _readData().then((data) {
         if (data != null) {
-          listOfFavoriteCities = jsonDecode(data);
+          listOfFavoriteCities = List<CityModel>.from(jsonDecode(data)
+              .map((json) => CityModel.fromFavoritesJsonToFavoritesList(json)));
         }
       });
     });
@@ -85,7 +86,10 @@ class _MainViewState extends State<MainView> {
           SearchView(
               setSelectedCityCallback: setSelectedCity,
               changeScreenCallback: _changeScreenWithoutAnimation),
-          FavoritesView(),
+          FavoritesView(
+              listOfFavoriteCities: listOfFavoriteCities,
+              updateSelectedCityCallback: setSelectedCity,
+              changeScreenCallback: _changeScreenWithoutAnimation),
           AboutView(),
         ],
       ),
@@ -221,7 +225,12 @@ class _MainViewState extends State<MainView> {
   Future<File?> _saveFavoritesData() async {
     PermissionStatus permission = await Permission.storage.request();
     if (permission.isGranted) {
-      String data = jsonEncode(listOfFavoriteCities);
+      List<Map<String, dynamic>> mapList = [];
+
+      for (var city in listOfFavoriteCities) {
+        mapList.add(city.toJson());
+      }
+      String data = jsonEncode(mapList);
 
       final file = await _getFile();
       return file.writeAsString(data);

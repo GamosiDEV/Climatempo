@@ -1,136 +1,110 @@
+import 'package:climatempo/model/city_model.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class FavoritesView extends StatelessWidget {
-  const FavoritesView({super.key});
+  final List<CityModel> listOfFavoriteCities;
+  final ValueSetter<CityModel> updateSelectedCityCallback;
+  final ValueSetter<int> changeScreenCallback;
+
+  const FavoritesView(
+      {super.key,
+      required this.listOfFavoriteCities,
+      required this.changeScreenCallback,
+      required this.updateSelectedCityCallback});
 
   @override
   Widget build(BuildContext context) {
-    int maxItemCount = 10;
+    int millisecondsTime = DateTime.now().toUtc().millisecondsSinceEpoch;
     return Container(
       padding: EdgeInsets.all(8),
-      child: FutureBuilder(
-        future: null,
-        builder: (context, snapshot) {
-          return ListView.builder(
-            itemCount: maxItemCount,
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {
-                  print('click - ' + index.toString());
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 4.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
+      child: ListView.builder(
+        itemCount: listOfFavoriteCities.length,
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        itemBuilder: (context, index) {
+          int millisecondsPlusTimezone = millisecondsTime +
+              (listOfFavoriteCities[index].timezone * 1000) as int;
+          return InkWell(
+            onTap: () {
+              updateSelectedCityCallback(listOfFavoriteCities[index]);
+              changeScreenCallback(0);
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 4.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Column(
                         children: [
-                          Column(
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                child: Text(
-                                  'Cidade',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style:
-                                      Theme.of(context).textTheme.headlineSmall,
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                child: Text(
-                                  'Estado',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style:
-                                      Theme.of(context).textTheme.headlineSmall,
-                                ),
-                              ),
-                            ],
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            child: Text(
+                              listOfFavoriteCities[index].name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
                           ),
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        '15:55',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleSmall,
-                                      ),
-                                      Text(
-                                        '25/08/23',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleSmall,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.arrow_upward,
-                                              color: Colors.red),
-                                          Text(
-                                            '30°',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium,
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Icon(Icons.arrow_downward,
-                                              color: Color.fromRGBO(
-                                                  15, 255, 205, 1)),
-                                          Text(
-                                            '10°',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium,
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            child: Text(
+                              "" +
+                                  (listOfFavoriteCities[index].state != null
+                                      ? (listOfFavoriteCities[index].state)
+                                      : ("")) +
+                                  listOfFavoriteCities[index].country,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.headlineSmall,
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    const Divider(thickness: 2),
-                  ],
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    formatDate(
+                                        DateTime.fromMillisecondsSinceEpoch(
+                                            millisecondsPlusTimezone),
+                                        [HH, ':', nn]),
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
+                                  ),
+                                  Text(
+                                    formatDate(
+                                        DateTime.fromMillisecondsSinceEpoch(
+                                            millisecondsPlusTimezone),
+                                        [dd, '/', mm, '/', yyyy]),
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              );
-            },
+                const Divider(thickness: 2),
+              ],
+            ),
           );
         },
       ),
