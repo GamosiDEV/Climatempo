@@ -158,6 +158,8 @@ class _NextDaysViewState extends State<NextDaysView> {
         .getWeatherForSelectedCity(widget.actualCity as CityModel);
     selectedCityNextDaysWeather = Future.value(response);
     widget.updateSelectedCityCallback(response);
-    setState(() {});
+    if (this.mounted) {
+      setState(() {});
+    }
   }
 }

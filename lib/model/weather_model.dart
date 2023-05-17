@@ -69,8 +69,10 @@ class WeatherModel {
       clouds: json['clouds']['all'].toString() + "%",
       windSpeed: ((json['wind']['speed'] * 3.6).toStringAsFixed(2)).toString() +
           "Km/H",
-      windDegree: WeatherModel()
-          .windDirections[((json['wind']['deg'] / 45) % 8).round()],
+      windDegree: WeatherModel().windDirections[
+          ((json['wind']['deg'] / 45) % 8).round() == 8
+              ? 0
+              : ((json['wind']['deg'] / 45) % 8).round()],
       rain1h: json['rain'] != null ? json['rain']['1h'].toString() : "0",
       rain3h: json['rain'] != null ? json['rain']['3h'].toString() : "0",
       dateTime:

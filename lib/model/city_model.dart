@@ -58,4 +58,28 @@ class CityModel {
         actualWeather: WeatherModel(),
         nextDays: listOfWeathersForNextDays);
   }
+
+  factory CityModel.fromFavoritesJsonToFavoritesList(
+      Map<String, dynamic> json) {
+    return CityModel(
+        name: json['name'],
+        state: json['state'],
+        country: json['country'],
+        timezone: json['timezone'],
+        latitude: json['latitude'],
+        longitude: json['longitude'],
+        actualWeather: WeatherModel(),
+        nextDays: []);
+  }
+
+  toJson() {
+    return {
+      "name": this.name,
+      "state": this.state,
+      "country": this.country,
+      "timezone": this.timezone,
+      "latitude": this.latitude,
+      "longitude": this.longitude,
+    };
+  }
 }
