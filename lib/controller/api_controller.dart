@@ -15,7 +15,6 @@ class ApiController {
   static final NEXT_DAYS_WEATHER =
       "https://api.openweathermap.org/data/2.5/forecast?";
 
-  //lat={lat}&lon={lon}&appid={API key}
   Future<http.Response> getApiDataByString(String uri) async {
     return await http.get(Uri.parse(uri));
   }
@@ -31,29 +30,43 @@ class ApiController {
     return listOfCitys;
   }
 
+  //&appid={API key}
   Future<CityModel> getWeatherByCity(CityModel actualCity) async {
-    final response = await getApiDataByString(CURRENT_WEATHER +
-        LATITUDE +
-        actualCity.latitude.toString() +
-        "&" +
-        LONGITUDE +
-        actualCity.longitude.toString() +
-        "&" +
-        API_KEY);
+    final response = await getApiDataByString(
+        generateStringForApiRequest(actualCity, CURRENT_WEATHER));
+
     actualCity = CityModel.fromJsonForWeather(jsonDecode(response.body));
     return actualCity;
   }
 
   Future<CityModel> getNextDaysWeatherByCity(CityModel actualCity) async {
-    final response = await getApiDataByString(NEXT_DAYS_WEATHER +
-        LATITUDE +
-        actualCity.latitude.toString() +
-        "&" +
-        LONGITUDE +
-        actualCity.longitude.toString() +
-        "&" +
-        API_KEY);
+    final response = await getApiDataByString(
+        generateStringForApiRequest(actualCity, NEXT_DAYS_WEATHER));
+
     actualCity = CityModel.fromJsonForNextDays(jsonDecode(response.body));
     return actualCity;
+  }
+
+  String generateStringForApiRequest(CityModel city, String requisitionFor) {
+    if (city.name != null && city.state != null && city.country != null) {
+      return requisitionFor +
+          "q=" +
+          city.name +
+          "," +
+          city.state +
+          "," +
+          city.country +
+          "&" +
+          API_KEY;
+    } else {
+      return requisitionFor +
+          LATITUDE +
+          city.latitude.toString() +
+          "&" +
+          LONGITUDE +
+          city.longitude.toString() +
+          "&" +
+          API_KEY;
+    }
   }
 }
