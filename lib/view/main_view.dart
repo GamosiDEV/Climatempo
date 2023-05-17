@@ -213,6 +213,7 @@ class _MainViewState extends State<MainView> {
         setState(() {
           _saveFavoritesData();
         });
+        return;
       }
     }
   }
@@ -243,8 +244,9 @@ class _MainViewState extends State<MainView> {
       PermissionStatus permission = await Permission.storage.request();
       if (permission.isGranted) {
         final file = await _getFile();
-
-        return file.readAsString();
+        if (file.existsSync()) {
+          return file.readAsString();
+        }
       }
     } catch (e) {
       return null;

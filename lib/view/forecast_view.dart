@@ -227,6 +227,8 @@ class _ForecastViewState extends State<ForecastView> {
         .getWeatherForSelectedCity(widget.actualCity as CityModel);
     selectedCityWeather = Future.value(response);
     widget.updateSelectedCityCallback(response);
-    setState(() {});
+    if (this.mounted) {
+      setState(() {});
+    }
   }
 }
