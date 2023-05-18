@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:climatempo/model/city_model.dart';
+import 'package:climatempo/model/weather_model.dart';
 import 'package:climatempo/themes/base_theme.dart';
 import 'package:climatempo/view/about_view.dart';
 import 'package:climatempo/view/favorites_view.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:location/location.dart' as location;
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -51,11 +53,6 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          title,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
         actions: [
           _selectedTab > 1 || selectedCity == null
               ? Container()
@@ -66,9 +63,20 @@ class _MainViewState extends State<MainView> {
                     )
                   : IconButton(
                       onPressed: saveSelectedCityAsFavorite,
-                      icon: Icon(Icons.favorite),
-                    )
+                      icon: Icon(Icons.favorite,
+                          color: unselectedIconThemeData.color),
+                    ),
+          IconButton(
+            onPressed: getLocation,
+            alignment: Alignment.center,
+            icon: Icon(Icons.location_on,
+                color: Theme.of(context).iconTheme.color),
+          ),
         ],
+        title: Text(
+          title,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
       ),
       backgroundColor: baseTheme.backgroundColor,
       body: PageView(
@@ -252,5 +260,33 @@ class _MainViewState extends State<MainView> {
       return null;
     }
     return null;
+  }
+
+  getLocation() async {
+    var localization = new location.Location();
+    var _locationServiceEnabled = await localization.serviceEnabled();
+    if (!_locationServiceEnabled) {
+      _locationServiceEnabled = await localization.requestService();
+      if (!_locationServiceEnabled) {
+        return;
+      }
+    }
+
+    var _permissionGranted = await localization.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await localization.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+    var currentLocation = await localization.getLocation();
+
+    if (selectedCity == null) {
+      selectedCity = CityModel(actualWeather: WeatherModel(), nextDays: []);
+    }
+    selectedCity?.latitude = currentLocation.latitude;
+    selectedCity?.longitude = currentLocation.longitude;
+    _changeScreenWithoutAnimation(0);
+    setState(() {});
   }
 }

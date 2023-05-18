@@ -25,22 +25,12 @@ class _NextDaysViewState extends State<NextDaysView> {
 
   Future<CityModel>? selectedCityNextDaysWeather;
 
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.actualCity != null) {
-        getSelectedCityWeatherForNextDays();
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(8),
       child: FutureBuilder(
-        future: selectedCityNextDaysWeather,
+        future: getSelectedCityWeatherForNextDays(),
         builder: (context, snapshot) {
           if (!snapshot.hasData ||
               snapshot.hasError ||
@@ -98,7 +88,7 @@ class _NextDaysViewState extends State<NextDaysView> {
                                   WeatherModel().weekdays[nextDaysReport
                                           .nextDays[index].dateTime.weekday -
                                       1],
-                                  style: Theme.of(context).textTheme.titleSmall,
+                                  style: Theme.of(context).textTheme.labelSmall,
                                 ),
                               ),
                               Spacer(),
@@ -154,12 +144,13 @@ class _NextDaysViewState extends State<NextDaysView> {
   }
 
   getSelectedCityWeatherForNextDays() async {
+    if (widget.actualCity == null) {
+      return null;
+    }
     CityModel response = await _nextDaysController
         .getWeatherForSelectedCity(widget.actualCity as CityModel);
     selectedCityNextDaysWeather = Future.value(response);
     widget.updateSelectedCityCallback(response);
-    if (this.mounted) {
-      setState(() {});
-    }
+    return selectedCityNextDaysWeather;
   }
 }

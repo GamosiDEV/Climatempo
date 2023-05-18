@@ -10,6 +10,7 @@ import 'package:date_format/date_format.dart';
 class ForecastView extends StatefulWidget {
   final CityModel? actualCity;
   final ValueSetter<CityModel> updateSelectedCityCallback;
+  //updateCityName
 
   const ForecastView({
     super.key,
@@ -27,22 +28,10 @@ class _ForecastViewState extends State<ForecastView> {
   Future<CityModel>? selectedCityWeather;
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.actualCity != null) {
-        getWeatherForSelectedCity();
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    var maxItemCount = 10;
     return SingleChildScrollView(
         child: FutureBuilder(
-      future: selectedCityWeather,
+      future: getWeatherForSelectedCity(),
       builder: (context, snapshot) {
         if (!snapshot.hasData ||
             snapshot.hasError ||
@@ -223,12 +212,13 @@ class _ForecastViewState extends State<ForecastView> {
   }
 
   getWeatherForSelectedCity() async {
+    if (widget.actualCity == null) {
+      return null;
+    }
     CityModel response = await _forecastController
         .getWeatherForSelectedCity(widget.actualCity as CityModel);
     selectedCityWeather = Future.value(response);
     widget.updateSelectedCityCallback(response);
-    if (this.mounted) {
-      setState(() {});
-    }
+    return selectedCityWeather;
   }
 }
