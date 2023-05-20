@@ -32,7 +32,8 @@ TextTheme textTheme = TextTheme(
   bodyMedium: TextStyle(color: Colors.white, fontSize: 16),
   bodyLarge: TextStyle(color: Colors.white),
   labelSmall: TextStyle(color: Colors.white),
-  titleSmall: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+  titleSmall:
+      TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 12),
   titleMedium: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
   titleLarge: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
   displaySmall: TextStyle(

@@ -86,10 +86,14 @@ class _MainViewState extends State<MainView> {
           ForecastView(
             actualCity: selectedCity,
             updateSelectedCityCallback: setSelectedCity,
+            getLocationCallback: getLocation,
+            changeScreenCallback: _changeScreenWithoutAnimation,
           ),
           NextDaysView(
             actualCity: selectedCity,
             updateSelectedCityCallback: setSelectedCity,
+            getLocationCallback: getLocation,
+            changeScreenCallback: _changeScreenWithoutAnimation,
           ),
           SearchView(
               setSelectedCityCallback: setSelectedCity,

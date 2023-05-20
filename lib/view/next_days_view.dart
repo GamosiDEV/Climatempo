@@ -1,6 +1,7 @@
 import 'package:climatempo/controller/next_days_controller.dart';
 import 'package:climatempo/model/city_model.dart';
 import 'package:climatempo/model/weather_model.dart';
+import 'package:climatempo/view/location_not_found.view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -9,12 +10,15 @@ import 'package:date_format/date_format.dart';
 class NextDaysView extends StatefulWidget {
   final CityModel? actualCity;
   final ValueSetter<CityModel> updateSelectedCityCallback;
+  final VoidCallback getLocationCallback;
+  final ValueSetter<int> changeScreenCallback;
 
-  const NextDaysView({
-    super.key,
-    required this.actualCity,
-    required this.updateSelectedCityCallback,
-  });
+  const NextDaysView(
+      {super.key,
+      required this.actualCity,
+      required this.updateSelectedCityCallback,
+      required this.getLocationCallback,
+      required this.changeScreenCallback});
 
   @override
   State<NextDaysView> createState() => _NextDaysViewState();
@@ -32,16 +36,18 @@ class _NextDaysViewState extends State<NextDaysView> {
       child: FutureBuilder(
         future: getSelectedCityWeatherForNextDays(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData ||
-              snapshot.hasError ||
-              snapshot.connectionState != ConnectionState.done ||
-              snapshot == null) {
+          if (snapshot.hasError ||
+              snapshot.connectionState != ConnectionState.done) {
             return const Padding(
               padding: EdgeInsets.all(16.0),
               child: Center(
                 child: CircularProgressIndicator(),
               ),
             );
+          } else if (!snapshot.hasData || snapshot == null) {
+            return LocationNotFoundView(
+                getLocationCallback: widget.getLocationCallback,
+                changeScreenCallback: widget.changeScreenCallback);
           }
           CityModel nextDaysReport = snapshot.data as CityModel;
           return ListView.builder(
@@ -88,7 +94,7 @@ class _NextDaysViewState extends State<NextDaysView> {
                                   WeatherModel().weekdays[nextDaysReport
                                           .nextDays[index].dateTime.weekday -
                                       1],
-                                  style: Theme.of(context).textTheme.labelSmall,
+                                  style: Theme.of(context).textTheme.titleSmall,
                                 ),
                               ),
                               Spacer(),
