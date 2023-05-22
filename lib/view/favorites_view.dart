@@ -1,4 +1,4 @@
-import 'package:climatempo/model/city_model.dart';
+import 'package:weatherreport/model/city_model.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';

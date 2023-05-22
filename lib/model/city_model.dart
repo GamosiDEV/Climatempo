@@ -1,4 +1,4 @@
-import 'package:climatempo/model/weather_model.dart';
+import 'package:weatherreport/model/weather_model.dart';
 
 class CityModel {
   var name;

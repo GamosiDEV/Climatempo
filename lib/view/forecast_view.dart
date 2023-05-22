@@ -1,8 +1,8 @@
-import 'package:climatempo/controller/forecast_controller.dart';
-import 'package:climatempo/model/city_model.dart';
-import 'package:climatempo/model/weather_model.dart';
+import 'package:weatherreport/controller/forecast_controller.dart';
+import 'package:weatherreport/model/city_model.dart';
+import 'package:weatherreport/model/weather_model.dart';
 import 'package:flutter/material.dart';
-import 'package:climatempo/view/location_not_found.view.dart';
+import 'package:weatherreport/view/location_not_found.view.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:date_format/date_format.dart';

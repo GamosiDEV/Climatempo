@@ -1,5 +1,5 @@
-import 'package:climatempo/themes/base_theme.dart';
-import 'package:climatempo/view/main_view.dart';
+import 'package:weatherreport/themes/base_theme.dart';
+import 'package:weatherreport/view/main_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Water Report',
+      title: 'Weather Report',
       theme: baseTheme,
       home: const MainView(),
     );

@@ -1,4 +1,4 @@
-package br.com.gamosidev.climatempo
+package br.com.gamosidev.weatherreport
 
 import io.flutter.embedding.android.FlutterActivity
 

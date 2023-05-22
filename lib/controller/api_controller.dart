@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:climatempo/model/city_model.dart';
+import 'package:weatherreport/model/city_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiController {
@@ -30,7 +30,6 @@ class ApiController {
     return listOfCitys;
   }
 
-  //&appid={API key}
   Future<CityModel> getWeatherByCity(CityModel actualCity) async {
     final response = await getApiDataByString(
         generateStringForApiRequest(actualCity, CURRENT_WEATHER));

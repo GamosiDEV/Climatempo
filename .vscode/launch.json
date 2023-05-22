@@ -5,19 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "climatempo",
+            "name": "weatherreport",
             "request": "launch",
             "type": "dart",
             "program": "lib/app/main.dart"
         },
         {
-            "name": "climatempo (profile mode)",
+            "name": "weatherreport (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "climatempo (release mode)",
+            "name": "weatherreport (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

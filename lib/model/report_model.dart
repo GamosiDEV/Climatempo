@@ -1,5 +1,5 @@
-import 'package:climatempo/model/city_model.dart';
-import 'package:climatempo/model/weather_model.dart';
+import 'package:weatherreport/model/city_model.dart';
+import 'package:weatherreport/model/weather_model.dart';
 
 class ReportModel {
   List<WeatherModel> listOfWeathers = [];

@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:climatempo/model/city_model.dart';
-import 'package:climatempo/model/weather_model.dart';
-import 'package:climatempo/themes/base_theme.dart';
-import 'package:climatempo/view/about_view.dart';
-import 'package:climatempo/view/favorites_view.dart';
-import 'package:climatempo/view/forecast_view.dart';
-import 'package:climatempo/view/next_days_view.dart';
-import 'package:climatempo/view/search_view.dart';
+import 'package:weatherreport/model/city_model.dart';
+import 'package:weatherreport/model/weather_model.dart';
+import 'package:weatherreport/themes/base_theme.dart';
+import 'package:weatherreport/view/about_view.dart';
+import 'package:weatherreport/view/favorites_view.dart';
+import 'package:weatherreport/view/forecast_view.dart';
+import 'package:weatherreport/view/next_days_view.dart';
+import 'package:weatherreport/view/search_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
