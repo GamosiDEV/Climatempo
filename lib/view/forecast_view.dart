@@ -12,13 +12,16 @@ class ForecastView extends StatefulWidget {
   final ValueSetter<CityModel> updateSelectedCityCallback;
   final VoidCallback getLocationCallback;
   final ValueSetter<int> changeScreenCallback;
+  final ValueSetter<String> setCityNameToTittleCallback;
 
-  const ForecastView(
-      {super.key,
-      required this.actualCity,
-      required this.updateSelectedCityCallback,
-      required this.getLocationCallback,
-      required this.changeScreenCallback});
+  const ForecastView({
+    super.key,
+    required this.actualCity,
+    required this.updateSelectedCityCallback,
+    required this.getLocationCallback,
+    required this.changeScreenCallback,
+    required this.setCityNameToTittleCallback,
+  });
 
   @override
   State<ForecastView> createState() => _ForecastViewState();
@@ -228,6 +231,12 @@ class _ForecastViewState extends State<ForecastView> {
     }
     CityModel response = await _forecastController
         .getWeatherForSelectedCity(widget.actualCity as CityModel);
+    widget.setCityNameToTittleCallback(response.name == null
+        ? 'Cidade'
+        : response.name +
+            (response.state == null ? "" : (" - " + response.state)) +
+            " - " +
+            response.country);
     selectedCityWeather = Future.value(response);
     widget.updateSelectedCityCallback(response);
     return selectedCityWeather;

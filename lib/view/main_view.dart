@@ -84,11 +84,11 @@ class _MainViewState extends State<MainView> {
         onPageChanged: changeSelectedTab,
         children: [
           ForecastView(
-            actualCity: selectedCity,
-            updateSelectedCityCallback: setSelectedCity,
-            getLocationCallback: getLocation,
-            changeScreenCallback: _changeScreenWithoutAnimation,
-          ),
+              actualCity: selectedCity,
+              updateSelectedCityCallback: setSelectedCity,
+              getLocationCallback: getLocation,
+              changeScreenCallback: _changeScreenWithoutAnimation,
+              setCityNameToTittleCallback: setCityNameToTittle),
           NextDaysView(
             actualCity: selectedCity,
             updateSelectedCityCallback: setSelectedCity,
@@ -157,18 +157,26 @@ class _MainViewState extends State<MainView> {
     });
   }
 
+  void setCityNameToTittle(cityName) {
+    if (cityName == title) {
+      return;
+    }
+    title = cityName;
+    setState(() {});
+  }
+
   void _changeTitle(index) {
     switch (index) {
       case 0:
       case 1:
-        title = selectedCity?.name == null
+        setCityNameToTittle(selectedCity?.name == null
             ? 'Cidade'
             : selectedCity?.name +
                 (selectedCity?.state == null
                     ? ""
                     : (" - " + selectedCity?.state)) +
                 " - " +
-                selectedCity?.country;
+                selectedCity?.country);
         break;
       case 2:
         title = 'Buscar';
