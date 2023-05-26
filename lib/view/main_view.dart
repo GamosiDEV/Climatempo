@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_interpolation_to_compose_strings, unnecessary_cast
 
 import 'dart:convert';
 import 'dart:io';
@@ -62,7 +62,7 @@ class _MainViewState extends State<MainView> {
                           color: unselectedIconThemeData.color),
                     ),
           IconButton(
-            onPressed: getLocation,
+            onPressed: verifyLocalizationPermissionAndGetLocation,
             alignment: Alignment.center,
             icon: Icon(Icons.location_on,
                 color: Theme.of(context).iconTheme.color),
@@ -81,13 +81,13 @@ class _MainViewState extends State<MainView> {
           ForecastView(
               actualCity: selectedCity,
               updateSelectedCityCallback: setSelectedCity,
-              getLocationCallback: getLocation,
+              getLocationCallback: verifyLocalizationPermissionAndGetLocation,
               changeScreenCallback: _changeScreenWithoutAnimation,
               setCityNameToTittleCallback: setCityNameToTittle),
           NextDaysView(
             actualCity: selectedCity,
             updateSelectedCityCallback: setSelectedCity,
-            getLocationCallback: getLocation,
+            getLocationCallback: verifyLocalizationPermissionAndGetLocation,
             changeScreenCallback: _changeScreenWithoutAnimation,
           ),
           SearchView(
@@ -186,7 +186,7 @@ class _MainViewState extends State<MainView> {
   }
 
   setSelectedCity(CityModel selectedCity) {
-    selectedCity = selectedCity;
+    this.selectedCity = selectedCity;
   }
 
   changeSelectedTab(int index) {
@@ -206,8 +206,6 @@ class _MainViewState extends State<MainView> {
     }
     return false;
   }
-
-  onFavoriteButtonPressed() {}
 
   saveSelectedCityAsFavorite() {
     if (selectedCity?.latitude != null && selectedCity?.longitude != null) {
@@ -239,8 +237,7 @@ class _MainViewState extends State<MainView> {
   }
 
   Future<File?> _saveFavoritesData() async {
-    PermissionStatus permission = await Permission.storage.request();
-    if (permission.isGranted) {
+    if (requestStoragePermission()) {
       List<Map<String, dynamic>> mapList = [];
 
       for (var city in listOfFavoriteCities) {
@@ -254,10 +251,14 @@ class _MainViewState extends State<MainView> {
     return null;
   }
 
+  requestStoragePermission() async {
+    PermissionStatus permission = await Permission.storage.request();
+    return permission.isGranted;
+  }
+
   Future<String?> _readData() async {
     try {
-      PermissionStatus permission = await Permission.storage.request();
-      if (permission.isGranted) {
+      if (requestStoragePermission()) {
         final file = await _getFile();
         if (file.existsSync()) {
           return file.readAsString();
@@ -269,7 +270,7 @@ class _MainViewState extends State<MainView> {
     return null;
   }
 
-  getLocation() async {
+  verifyLocalizationPermissionAndGetLocation() async {
     var localization = location.Location();
     var locationServiceEnabled = await localization.serviceEnabled();
     if (!locationServiceEnabled) {
@@ -293,5 +294,9 @@ class _MainViewState extends State<MainView> {
     selectedCity?.longitude = currentLocation.longitude;
     _changeScreenWithoutAnimation(0);
     setState(() {});
+  }
+
+  hasLocalizationAndPermissionGranted(localization) async {
+    return true;
   }
 }
