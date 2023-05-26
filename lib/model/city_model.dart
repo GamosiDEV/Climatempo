@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:weatherreport/model/weather_model.dart';
 
 class CityModel {
@@ -74,12 +76,12 @@ class CityModel {
 
   toJson() {
     return {
-      "name": this.name,
-      "state": this.state,
-      "country": this.country,
-      "timezone": this.timezone,
-      "latitude": this.latitude,
-      "longitude": this.longitude,
+      "name": name,
+      "state": state,
+      "country": country,
+      "timezone": timezone,
+      "latitude": latitude,
+      "longitude": longitude,
     };
   }
 }

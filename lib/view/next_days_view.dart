@@ -3,8 +3,6 @@ import 'package:weatherreport/model/city_model.dart';
 import 'package:weatherreport/model/weather_model.dart';
 import 'package:weatherreport/view/location_not_found.view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:date_format/date_format.dart';
 
 class NextDaysView extends StatefulWidget {
@@ -25,14 +23,14 @@ class NextDaysView extends StatefulWidget {
 }
 
 class _NextDaysViewState extends State<NextDaysView> {
-  NextDaysController _nextDaysController = NextDaysController();
+  final NextDaysController _nextDaysController = NextDaysController();
 
   Future<CityModel>? selectedCityNextDaysWeather;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: FutureBuilder(
         future: getSelectedCityWeatherForNextDays(),
         builder: (context, snapshot) {
@@ -44,7 +42,7 @@ class _NextDaysViewState extends State<NextDaysView> {
                 child: CircularProgressIndicator(),
               ),
             );
-          } else if (!snapshot.hasData || snapshot == null) {
+          } else if (!snapshot.hasData) {
             return LocationNotFoundView(
                 getLocationCallback: widget.getLocationCallback,
                 changeScreenCallback: widget.changeScreenCallback);
@@ -89,7 +87,7 @@ class _NextDaysViewState extends State<NextDaysView> {
                                 ],
                               ),
                               Padding(
-                                padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                                 child: Text(
                                   WeatherModel().weekdays[nextDaysReport
                                           .nextDays[index].dateTime.weekday -
@@ -97,13 +95,13 @@ class _NextDaysViewState extends State<NextDaysView> {
                                   style: Theme.of(context).textTheme.titleSmall,
                                 ),
                               ),
-                              Spacer(),
+                              const Spacer(),
                               Padding(
-                                padding: EdgeInsets.fromLTRB(6, 0, 6, 0),
+                                padding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Icon(Icons.water_drop),
+                                    const Icon(Icons.water_drop),
                                     Text(
                                       nextDaysReport.nextDays[index].humidity,
                                       style: Theme.of(context)
@@ -114,7 +112,7 @@ class _NextDaysViewState extends State<NextDaysView> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.fromLTRB(6, 0, 6, 0),
+                                padding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [

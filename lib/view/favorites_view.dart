@@ -1,8 +1,6 @@
 import 'package:weatherreport/model/city_model.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class FavoritesView extends StatelessWidget {
   final List<CityModel> listOfFavoriteCities;
@@ -19,7 +17,7 @@ class FavoritesView extends StatelessWidget {
   Widget build(BuildContext context) {
     int millisecondsTime = DateTime.now().toUtc().millisecondsSinceEpoch;
     return Container(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: ListView.builder(
         itemCount: listOfFavoriteCities.length,
         shrinkWrap: true,
@@ -42,7 +40,7 @@ class FavoritesView extends StatelessWidget {
                     children: [
                       Column(
                         children: [
-                          Container(
+                          SizedBox(
                             width: MediaQuery.of(context).size.width * 0.5,
                             child: Text(
                               listOfFavoriteCities[index].name,
@@ -51,9 +49,10 @@ class FavoritesView extends StatelessWidget {
                               style: Theme.of(context).textTheme.headlineSmall,
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             width: MediaQuery.of(context).size.width * 0.5,
                             child: Text(
+                              // ignore: prefer_interpolation_to_compose_strings
                               "" +
                                   (listOfFavoriteCities[index].state != null
                                       ? (listOfFavoriteCities[index].state)

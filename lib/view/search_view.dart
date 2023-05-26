@@ -1,15 +1,15 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:weatherreport/controller/search_controller.dart';
 import 'package:weatherreport/model/city_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class SearchView extends StatefulWidget {
   final ValueSetter<CityModel> setSelectedCityCallback;
   final ValueSetter<int> changeScreenCallback;
 
-  SearchView(
+  const SearchView(
       {super.key,
       required this.setSelectedCityCallback,
       required this.changeScreenCallback});
@@ -19,16 +19,15 @@ class SearchView extends StatefulWidget {
 }
 
 class _SearchViewState extends State<SearchView> {
-  TextEditingController _searchTextController = TextEditingController();
-  SearchController _searchController = SearchController();
+  final TextEditingController _searchTextController = TextEditingController();
+  final SearchController _searchController = SearchController();
 
   var searchedCitys;
 
   @override
   Widget build(BuildContext context) {
-    var maxItemCount = 100;
     return Container(
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
           TextField(
@@ -60,7 +59,6 @@ class _SearchViewState extends State<SearchView> {
             child: FutureBuilder(
               future: searchedCitys,
               builder: (context, snapshot) {
-                print(snapshot.data);
                 if (!snapshot.hasData ||
                     snapshot.hasError ||
                     snapshot.connectionState != ConnectionState.done) {
