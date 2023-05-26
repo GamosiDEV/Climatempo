@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings, unnecessary_cast
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -10,8 +12,6 @@ import 'package:weatherreport/view/forecast_view.dart';
 import 'package:weatherreport/view/next_days_view.dart';
 import 'package:weatherreport/view/search_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:location/location.dart' as location;
@@ -25,20 +25,15 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   int _selectedTab = 0;
-  String title = '';
+  String appBarTitle = '';
   bool asPermissionGaranted = false;
-
   List<CityModel> listOfFavoriteCities = [];
-
-  PageController _pageController = PageController(initialPage: 0);
-
+  final PageController _pageController = PageController(initialPage: 0);
   CityModel? selectedCity;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _readData().then((data) {
         if (data != null) {
@@ -59,7 +54,7 @@ class _MainViewState extends State<MainView> {
               : asSelectedCityFavorited()
                   ? IconButton(
                       onPressed: removeSelectedCityFromFavorites,
-                      icon: Icon(Icons.favorite, color: Colors.redAccent),
+                      icon: const Icon(Icons.favorite, color: Colors.redAccent),
                     )
                   : IconButton(
                       onPressed: saveSelectedCityAsFavorite,
@@ -67,14 +62,14 @@ class _MainViewState extends State<MainView> {
                           color: unselectedIconThemeData.color),
                     ),
           IconButton(
-            onPressed: getLocation,
+            onPressed: verifyLocalizationPermissionAndGetLocation,
             alignment: Alignment.center,
             icon: Icon(Icons.location_on,
                 color: Theme.of(context).iconTheme.color),
           ),
         ],
         title: Text(
-          title,
+          appBarTitle,
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
@@ -86,13 +81,13 @@ class _MainViewState extends State<MainView> {
           ForecastView(
               actualCity: selectedCity,
               updateSelectedCityCallback: setSelectedCity,
-              getLocationCallback: getLocation,
+              getLocationCallback: verifyLocalizationPermissionAndGetLocation,
               changeScreenCallback: _changeScreenWithoutAnimation,
               setCityNameToTittleCallback: setCityNameToTittle),
           NextDaysView(
             actualCity: selectedCity,
             updateSelectedCityCallback: setSelectedCity,
-            getLocationCallback: getLocation,
+            getLocationCallback: verifyLocalizationPermissionAndGetLocation,
             changeScreenCallback: _changeScreenWithoutAnimation,
           ),
           SearchView(
@@ -102,7 +97,7 @@ class _MainViewState extends State<MainView> {
               listOfFavoriteCities: listOfFavoriteCities,
               updateSelectedCityCallback: setSelectedCity,
               changeScreenCallback: _changeScreenWithoutAnimation),
-          AboutView(),
+          const AboutView(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -158,10 +153,10 @@ class _MainViewState extends State<MainView> {
   }
 
   void setCityNameToTittle(cityName) {
-    if (cityName == title) {
+    if (cityName == appBarTitle) {
       return;
     }
-    title = cityName;
+    appBarTitle = cityName;
     setState(() {});
   }
 
@@ -179,19 +174,19 @@ class _MainViewState extends State<MainView> {
                 selectedCity?.country);
         break;
       case 2:
-        title = 'Buscar';
+        appBarTitle = 'Buscar';
         break;
       case 3:
-        title = 'Favoritos';
+        appBarTitle = 'Favoritos';
         break;
       case 4:
-        title = 'Sobre';
+        appBarTitle = 'Sobre';
         break;
     }
   }
 
-  setSelectedCity(CityModel _selectedCity) {
-    selectedCity = _selectedCity;
+  setSelectedCity(CityModel selectedCity) {
+    this.selectedCity = selectedCity;
   }
 
   changeSelectedTab(int index) {
@@ -211,8 +206,6 @@ class _MainViewState extends State<MainView> {
     }
     return false;
   }
-
-  onFavoriteButtonPressed() {}
 
   saveSelectedCityAsFavorite() {
     if (selectedCity?.latitude != null && selectedCity?.longitude != null) {
@@ -244,8 +237,7 @@ class _MainViewState extends State<MainView> {
   }
 
   Future<File?> _saveFavoritesData() async {
-    PermissionStatus permission = await Permission.storage.request();
-    if (permission.isGranted) {
+    if (requestStoragePermission()) {
       List<Map<String, dynamic>> mapList = [];
 
       for (var city in listOfFavoriteCities) {
@@ -259,10 +251,14 @@ class _MainViewState extends State<MainView> {
     return null;
   }
 
+  requestStoragePermission() async {
+    PermissionStatus permission = await Permission.storage.request();
+    return permission.isGranted;
+  }
+
   Future<String?> _readData() async {
     try {
-      PermissionStatus permission = await Permission.storage.request();
-      if (permission.isGranted) {
+      if (requestStoragePermission()) {
         final file = await _getFile();
         if (file.existsSync()) {
           return file.readAsString();
@@ -274,31 +270,33 @@ class _MainViewState extends State<MainView> {
     return null;
   }
 
-  getLocation() async {
-    var localization = new location.Location();
-    var _locationServiceEnabled = await localization.serviceEnabled();
-    if (!_locationServiceEnabled) {
-      _locationServiceEnabled = await localization.requestService();
-      if (!_locationServiceEnabled) {
+  verifyLocalizationPermissionAndGetLocation() async {
+    var localization = location.Location();
+    var locationServiceEnabled = await localization.serviceEnabled();
+    if (!locationServiceEnabled) {
+      locationServiceEnabled = await localization.requestService();
+      if (!locationServiceEnabled) {
         return;
       }
     }
 
-    var _permissionGranted = await localization.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await localization.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
+    var permissionGranted = await localization.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await localization.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
         return;
       }
     }
     var currentLocation = await localization.getLocation();
 
-    if (selectedCity == null) {
-      selectedCity = CityModel(actualWeather: WeatherModel(), nextDays: []);
-    }
+    selectedCity ??= CityModel(actualWeather: WeatherModel(), nextDays: []);
     selectedCity?.latitude = currentLocation.latitude;
     selectedCity?.longitude = currentLocation.longitude;
     _changeScreenWithoutAnimation(0);
     setState(() {});
+  }
+
+  hasLocalizationAndPermissionGranted(localization) async {
+    return true;
   }
 }

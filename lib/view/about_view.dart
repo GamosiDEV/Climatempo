@@ -1,7 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutView extends StatelessWidget {
@@ -9,10 +7,10 @@ class AboutView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final linkedinUrl =
+    const linkedinUrl =
         "https://www.linkedin.com/in/gabriel-de-moura-silva-2ab729112/";
-    final gitUrl = "https://github.com/GamosiDEV";
-    final portifolioUrl = "https://www.google.com";
+    const gitUrl = "https://github.com/GamosiDEV";
+    const portifolioUrl = "https://www.google.com";
 
     return Column(
       children: [
@@ -26,12 +24,12 @@ class AboutView extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
               child: Row(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 48,
                     backgroundImage: NetworkImage(
                         'https://avatars.githubusercontent.com/u/38093698?v=4'),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -44,7 +42,6 @@ class AboutView extends StatelessWidget {
                             recognizer: TapGestureRecognizer()
                               ..onTap = () async {
                                 _launchUrl(Uri.parse(linkedinUrl));
-                                print("Launch LINKEDIN");
                               },
                           ),
                         ),
@@ -58,7 +55,6 @@ class AboutView extends StatelessWidget {
                             recognizer: TapGestureRecognizer()
                               ..onTap = () async {
                                 _launchUrl(Uri.parse(gitUrl));
-                                print("Launch GIT");
                               },
                           ),
                         ),
@@ -69,7 +65,7 @@ class AboutView extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: RichText(
                 text: TextSpan(
                   style: Theme.of(context).textTheme.bodyMedium,
@@ -78,16 +74,15 @@ class AboutView extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: 'portifolio',
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.lightBlueAccent,
                           fontWeight: FontWeight.bold),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async {
                           _launchUrl(Uri.parse(portifolioUrl));
-                          print("Launch Portifolio");
                         },
                     ),
-                    TextSpan(
+                    const TextSpan(
                       text:
                           ', portanto sinta-se avontade para explorar o aplicativo e utiliza-lo, caso queira conhecer mais sobre seu funcionamento acesse o codigo pelo Git a cima, e caso sinta vontade de entrar em contato comigo basta acessar meu Linkedin tambem a cima, fique bem e muito obrigado por baixar meu aplicativo!',
                     ),
@@ -101,9 +96,9 @@ class AboutView extends StatelessWidget {
     );
   }
 
-  Future<void> _launchUrl(_url) async {
-    if (!await launchUrl(_url)) {
-      throw Exception('Could not launch $_url');
+  Future<void> _launchUrl(url) async {
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
     }
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, prefer_interpolation_to_compose_strings
+
 import 'package:flutter/material.dart';
 
 class WeatherModel {
@@ -53,22 +55,14 @@ class WeatherModel {
   factory WeatherModel.fromJsonForWeather(
       Map<String, dynamic> json, int timezone) {
     return WeatherModel(
-      temperature:
-          ((json['main']['temp'] - 273.1).toStringAsFixed(0)).toString() + "°",
-      feelsLike:
-          ((json['main']['feels_like'] - 273.1).toStringAsFixed(0)).toString() +
-              "°",
-      minimum:
-          ((json['main']['temp_min'] - 273.1).toStringAsFixed(0)).toString() +
-              "°",
-      maximum:
-          ((json['main']['temp_max'] - 273.1).toStringAsFixed(0)).toString() +
-              "°",
-      humidity: json['main']['humidity'].toString() + "%",
+      temperature: "${(json['main']['temp'] - 273.1).toStringAsFixed(0)}°",
+      feelsLike: "${(json['main']['feels_like'] - 273.1).toStringAsFixed(0)}°",
+      minimum: "${(json['main']['temp_min'] - 273.1).toStringAsFixed(0)}°",
+      maximum: "${(json['main']['temp_max'] - 273.1).toStringAsFixed(0)}°",
+      humidity: "${json['main']['humidity']}%",
       sky: WeatherModel().skySituation(json['weather'][0]['id']),
-      clouds: json['clouds']['all'].toString() + "%",
-      windSpeed: ((json['wind']['speed'] * 3.6).toStringAsFixed(2)).toString() +
-          "Km/H",
+      clouds: "${json['clouds']['all']}%",
+      windSpeed: "${(json['wind']['speed'] * 3.6).toStringAsFixed(2)}Km/H",
       windDegree: WeatherModel().windDirections[
           ((json['wind']['deg'] / 45) % 8).round() == 8
               ? 0

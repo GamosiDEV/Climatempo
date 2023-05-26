@@ -1,15 +1,16 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:weatherreport/controller/search_controller.dart';
 import 'package:weatherreport/model/city_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:weatherreport/view/show_data_search_view.dart';
 
 class SearchView extends StatefulWidget {
   final ValueSetter<CityModel> setSelectedCityCallback;
   final ValueSetter<int> changeScreenCallback;
 
-  SearchView(
+  const SearchView(
       {super.key,
       required this.setSelectedCityCallback,
       required this.changeScreenCallback});
@@ -19,16 +20,15 @@ class SearchView extends StatefulWidget {
 }
 
 class _SearchViewState extends State<SearchView> {
-  TextEditingController _searchTextController = TextEditingController();
-  SearchController _searchController = SearchController();
+  final TextEditingController _searchTextController = TextEditingController();
+  final SearchController _searchController = SearchController();
 
   var searchedCitys;
 
   @override
   Widget build(BuildContext context) {
-    var maxItemCount = 100;
     return Container(
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
           TextField(
@@ -39,14 +39,7 @@ class _SearchViewState extends State<SearchView> {
                   icon: Icon(Icons.question_mark,
                       color: Theme.of(context).iconTheme.color),
                   onPressed: () {
-                    Fluttertoast.showToast(
-                      msg:
-                          "Para uma pesquisa detalhada digite os nomes da seguinte forma: Cidade, Estado, País",
-                      toastLength: Toast.LENGTH_SHORT,
-                      textColor: Colors.black,
-                      fontSize: 16,
-                      backgroundColor: Colors.grey[200],
-                    );
+                    showSearchHelp();
                   },
                 ),
                 hintStyle: Theme.of(context).textTheme.bodyMedium,
@@ -60,55 +53,15 @@ class _SearchViewState extends State<SearchView> {
             child: FutureBuilder(
               future: searchedCitys,
               builder: (context, snapshot) {
-                print(snapshot.data);
                 if (!snapshot.hasData ||
                     snapshot.hasError ||
                     snapshot.connectionState != ConnectionState.done) {
                   return Container();
                 }
-                List<CityModel> listOfSearchedCitys =
-                    snapshot.data as List<CityModel>;
-                return ListView.builder(
-                  itemCount: listOfSearchedCitys.length,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        widget.setSelectedCityCallback(
-                            listOfSearchedCitys[index]);
-                        widget.changeScreenCallback(0);
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 4.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  listOfSearchedCitys[index].name,
-                                  style:
-                                      Theme.of(context).textTheme.headlineSmall,
-                                ),
-                                Text(
-                                  listOfSearchedCitys[index].state +
-                                      " - " +
-                                      listOfSearchedCitys[index].country,
-                                  style:
-                                      Theme.of(context).textTheme.headlineSmall,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Divider(thickness: 2),
-                        ],
-                      ),
-                    );
-                  },
-                );
+                return ShowDataSearchView(
+                    listOfSearchedCitys: snapshot.data as List<CityModel>,
+                    setSelectedCityCallback: widget.setSelectedCityCallback,
+                    changeScreenCallback: widget.changeScreenCallback);
               },
             ),
           ),
@@ -120,5 +73,17 @@ class _SearchViewState extends State<SearchView> {
   void citySearch(cityName) async {
     searchedCitys = Future.value(await _searchController.citySearch(cityName));
     setState(() {});
+  }
+
+  showSearchHelp() {
+    Fluttertoast.cancel();
+    Fluttertoast.showToast(
+      msg:
+          "Para uma pesquisa detalhada digite os nomes da seguinte forma: Cidade, Estado, País",
+      toastLength: Toast.LENGTH_SHORT,
+      textColor: Colors.black,
+      fontSize: 16,
+      backgroundColor: Colors.grey[200],
+    );
   }
 }
