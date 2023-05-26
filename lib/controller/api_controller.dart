@@ -1,18 +1,20 @@
+// ignore_for_file: constant_identifier_names, prefer_interpolation_to_compose_strings
+
 import 'dart:convert';
 
 import 'package:weatherreport/model/city_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiController {
-  static final API_KEY = "appid=e2ecde63bb5920e5225f7a11c1659c3b";
-  static final GEOCODING_URI =
+  static const API_KEY = "appid=e2ecde63bb5920e5225f7a11c1659c3b";
+  static const GEOCODING_URI =
       "http://api.openweathermap.org/geo/1.0/direct?q=";
-  static final GEOCODING_LIMIT = "limit=20";
-  static final CURRENT_WEATHER =
+  static const GEOCODING_LIMIT = "limit=20";
+  static const CURRENT_WEATHER =
       "https://api.openweathermap.org/data/2.5/weather?";
-  static final LATITUDE = "lat=";
-  static final LONGITUDE = "lon=";
-  static final NEXT_DAYS_WEATHER =
+  static const LATITUDE = "lat=";
+  static const LONGITUDE = "lon=";
+  static const NEXT_DAYS_WEATHER =
       "https://api.openweathermap.org/data/2.5/forecast?";
 
   Future<http.Response> getApiDataByString(String uri) async {
@@ -21,7 +23,7 @@ class ApiController {
 
   Future<List<CityModel>> citySearchByNameOnly(cityName) async {
     final response = await getApiDataByString(
-        GEOCODING_URI + cityName + "&" + GEOCODING_LIMIT + "&" + API_KEY);
+        "${GEOCODING_URI + cityName}&$GEOCODING_LIMIT&$API_KEY");
     Iterable iterable = jsonDecode(response.body);
 
     List<CityModel> listOfCitys = List<CityModel>.from(
@@ -58,14 +60,7 @@ class ApiController {
           "&" +
           API_KEY;
     } else {
-      return requisitionFor +
-          LATITUDE +
-          city.latitude.toString() +
-          "&" +
-          LONGITUDE +
-          city.longitude.toString() +
-          "&" +
-          API_KEY;
+      return "$requisitionFor$LATITUDE${city.latitude}&$LONGITUDE${city.longitude}&$API_KEY";
     }
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 ThemeData baseTheme = ThemeData(
@@ -8,23 +6,23 @@ ThemeData baseTheme = ThemeData(
   textTheme: textTheme.apply(),
   iconTheme: selectedIconThemeData,
   fontFamily: 'Montserrat',
-  cardColor: Color.fromRGBO(2, 137, 204, 0.8),
-  cardTheme: CardTheme(
+  cardColor: const Color.fromRGBO(2, 137, 204, 0.8),
+  cardTheme: const CardTheme(
     margin: EdgeInsets.all(8.0),
     elevation: 8.0,
   ),
   elevatedButtonTheme: elevatedButtonThemeData,
-  backgroundColor: Color.fromRGBO(40, 98, 128, 0.5),
+  backgroundColor: const Color.fromRGBO(40, 98, 128, 0.5),
   colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.lightBlue),
 );
 
 ElevatedButtonThemeData elevatedButtonThemeData = ElevatedButtonThemeData(
   style: ElevatedButton.styleFrom(
-    backgroundColor: Color.fromRGBO(255, 247, 15, 1),
+    backgroundColor: const Color.fromRGBO(255, 247, 15, 1),
   ),
 );
 
-TextTheme textTheme = TextTheme(
+TextTheme textTheme = const TextTheme(
   headlineLarge: TextStyle(color: Colors.white, fontSize: 96),
   headlineMedium: TextStyle(color: Colors.white),
   headlineSmall: TextStyle(color: Colors.white),
@@ -40,10 +38,10 @@ TextTheme textTheme = TextTheme(
       fontWeight: FontWeight.bold, fontSize: 32, color: Colors.lightBlueAccent),
 );
 
-IconThemeData unselectedIconThemeData = IconThemeData(
+IconThemeData unselectedIconThemeData = const IconThemeData(
   color: Color.fromRGBO(1, 85, 128, 0.5),
 );
 
-IconThemeData selectedIconThemeData = IconThemeData(
+IconThemeData selectedIconThemeData = const IconThemeData(
   color: Colors.white,
 );
