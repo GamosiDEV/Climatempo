@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
 import 'package:weatherreport/model/city_model.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
@@ -27,8 +29,7 @@ class FavoritesView extends StatelessWidget {
               (listOfFavoriteCities[index].timezone * 1000) as int;
           return InkWell(
             onTap: () {
-              updateSelectedCityCallback(listOfFavoriteCities[index]);
-              changeScreenCallback(0);
+              setSelectedCityAndChangeScreen(index);
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +53,6 @@ class FavoritesView extends StatelessWidget {
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.5,
                             child: Text(
-                              // ignore: prefer_interpolation_to_compose_strings
                               "" +
                                   (listOfFavoriteCities[index].state != null
                                       ? (listOfFavoriteCities[index].state)
@@ -108,5 +108,10 @@ class FavoritesView extends StatelessWidget {
         },
       ),
     );
+  }
+
+  setSelectedCityAndChangeScreen(int index) {
+    updateSelectedCityCallback(listOfFavoriteCities[index]);
+    changeScreenCallback(0);
   }
 }
