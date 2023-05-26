@@ -4,6 +4,7 @@ import 'package:weatherreport/controller/search_controller.dart';
 import 'package:weatherreport/model/city_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:weatherreport/view/show_data_search_view.dart';
 
 class SearchView extends StatefulWidget {
   final ValueSetter<CityModel> setSelectedCityCallback;
@@ -57,49 +58,10 @@ class _SearchViewState extends State<SearchView> {
                     snapshot.connectionState != ConnectionState.done) {
                   return Container();
                 }
-                List<CityModel> listOfSearchedCitys =
-                    snapshot.data as List<CityModel>;
-                return ListView.builder(
-                  itemCount: listOfSearchedCitys.length,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        widget.setSelectedCityCallback(
-                            listOfSearchedCitys[index]);
-                        widget.changeScreenCallback(0);
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 4.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  listOfSearchedCitys[index].name,
-                                  style:
-                                      Theme.of(context).textTheme.headlineSmall,
-                                ),
-                                Text(
-                                  listOfSearchedCitys[index].state +
-                                      " - " +
-                                      listOfSearchedCitys[index].country,
-                                  style:
-                                      Theme.of(context).textTheme.headlineSmall,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Divider(thickness: 2),
-                        ],
-                      ),
-                    );
-                  },
-                );
+                return ShowDataSearchView(
+                    listOfSearchedCitys: snapshot.data as List<CityModel>,
+                    setSelectedCityCallback: widget.setSelectedCityCallback,
+                    changeScreenCallback: widget.changeScreenCallback);
               },
             ),
           ),
