@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_typing_uninitialized_variables, prefer_interpolation_to_compose_strings
 
 import 'package:flutter/material.dart';
 
@@ -72,7 +72,6 @@ class WeatherModel {
       dateTime:
           DateTime.fromMillisecondsSinceEpoch((json['dt'] + timezone) * 1000),
       icon:
-          // ignore: prefer_interpolation_to_compose_strings
           AssetImage("lib/assets/icons/" + json['weather'][0]['icon'] + ".png"),
     );
   }

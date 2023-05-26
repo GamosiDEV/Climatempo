@@ -1,4 +1,4 @@
-// ignore_for_file: constant_identifier_names
+// ignore_for_file: constant_identifier_names, prefer_interpolation_to_compose_strings
 
 import 'dart:convert';
 
@@ -50,7 +50,6 @@ class ApiController {
 
   String generateStringForApiRequest(CityModel city, String requisitionFor) {
     if (city.name != null && city.state != null && city.country != null) {
-      // ignore: prefer_interpolation_to_compose_strings
       return requisitionFor +
           "q=" +
           city.name +
