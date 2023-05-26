@@ -38,14 +38,7 @@ class _SearchViewState extends State<SearchView> {
                   icon: Icon(Icons.question_mark,
                       color: Theme.of(context).iconTheme.color),
                   onPressed: () {
-                    Fluttertoast.showToast(
-                      msg:
-                          "Para uma pesquisa detalhada digite os nomes da seguinte forma: Cidade, Estado, País",
-                      toastLength: Toast.LENGTH_SHORT,
-                      textColor: Colors.black,
-                      fontSize: 16,
-                      backgroundColor: Colors.grey[200],
-                    );
+                    showSearchHelp();
                   },
                 ),
                 hintStyle: Theme.of(context).textTheme.bodyMedium,
@@ -118,5 +111,17 @@ class _SearchViewState extends State<SearchView> {
   void citySearch(cityName) async {
     searchedCitys = Future.value(await _searchController.citySearch(cityName));
     setState(() {});
+  }
+
+  showSearchHelp() {
+    Fluttertoast.cancel();
+    Fluttertoast.showToast(
+      msg:
+          "Para uma pesquisa detalhada digite os nomes da seguinte forma: Cidade, Estado, País",
+      toastLength: Toast.LENGTH_SHORT,
+      textColor: Colors.black,
+      fontSize: 16,
+      backgroundColor: Colors.grey[200],
+    );
   }
 }
