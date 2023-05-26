@@ -2,11 +2,9 @@
 
 import 'package:weatherreport/controller/forecast_controller.dart';
 import 'package:weatherreport/model/city_model.dart';
-import 'package:weatherreport/model/weather_model.dart';
 import 'package:flutter/material.dart';
 import 'package:weatherreport/view/forecast_data_view.dart';
 import 'package:weatherreport/view/location_not_found.view.dart';
-import 'package:date_format/date_format.dart';
 
 class ForecastView extends StatefulWidget {
   final CityModel? actualCity;

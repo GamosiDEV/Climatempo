@@ -1,10 +1,7 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_typing_uninitialized_variables, prefer_interpolation_to_compose_strings
 
 import 'package:date_format/date_format.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:weatherreport/model/weather_model.dart';
 
 class ForecastDataView extends StatelessWidget {
