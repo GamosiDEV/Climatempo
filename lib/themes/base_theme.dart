@@ -12,9 +12,10 @@ ThemeData baseTheme = ThemeData(
     elevation: 8.0,
   ),
   elevatedButtonTheme: elevatedButtonThemeData,
-  backgroundColor: const Color.fromRGBO(40, 98, 128, 0.5),
   colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.lightBlue),
 );
+
+Color backgroundColor = const Color.fromRGBO(40, 98, 128, 0.5);
 
 ElevatedButtonThemeData elevatedButtonThemeData = ElevatedButtonThemeData(
   style: ElevatedButton.styleFrom(

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_interpolation_to_compose_strings, unnecessary_cast
+// ignore_for_file: prefer_interpolation_to_compose_strings, unnecessary_cast, unrelated_type_equality_checks
 
 import 'dart:convert';
 import 'dart:io';
@@ -73,7 +73,7 @@ class _MainViewState extends State<MainView> {
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
-      backgroundColor: baseTheme.backgroundColor,
+      backgroundColor: backgroundColor,
       body: PageView(
         controller: _pageController,
         onPageChanged: changeSelectedTab,
