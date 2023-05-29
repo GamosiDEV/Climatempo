@@ -1,27 +1,27 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
-import 'package:weatherreport/controller/search_controller.dart';
-import 'package:weatherreport/model/city_model.dart';
 import 'package:flutter/material.dart';
+import 'package:weatherreport/controller/city_search_controller.dart';
+import 'package:weatherreport/model/city_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:weatherreport/view/show_data_search_view.dart';
 
-class SearchView extends StatefulWidget {
+class CitySearchView extends StatefulWidget {
   final ValueSetter<CityModel> setSelectedCityCallback;
   final ValueSetter<int> changeScreenCallback;
 
-  const SearchView(
+  const CitySearchView(
       {super.key,
       required this.setSelectedCityCallback,
       required this.changeScreenCallback});
 
   @override
-  State<SearchView> createState() => _SearchViewState();
+  State<CitySearchView> createState() => _CitySearchViewState();
 }
 
-class _SearchViewState extends State<SearchView> {
+class _CitySearchViewState extends State<CitySearchView> {
   final TextEditingController _searchTextController = TextEditingController();
-  final SearchController _searchController = SearchController();
+  final CitySearchController _searchController = CitySearchController();
 
   var searchedCitys;
 

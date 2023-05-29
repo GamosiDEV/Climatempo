@@ -10,7 +10,7 @@ import 'package:weatherreport/view/about_view.dart';
 import 'package:weatherreport/view/favorites_view.dart';
 import 'package:weatherreport/view/forecast_view.dart';
 import 'package:weatherreport/view/next_days_view.dart';
-import 'package:weatherreport/view/search_view.dart';
+import 'package:weatherreport/view/city_search_view.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -90,7 +90,7 @@ class _MainViewState extends State<MainView> {
             getLocationCallback: verifyLocalizationPermissionAndGetLocation,
             changeScreenCallback: _changeScreenWithoutAnimation,
           ),
-          SearchView(
+          CitySearchView(
               setSelectedCityCallback: setSelectedCity,
               changeScreenCallback: _changeScreenWithoutAnimation),
           FavoritesView(
@@ -237,7 +237,8 @@ class _MainViewState extends State<MainView> {
   }
 
   Future<File?> _saveFavoritesData() async {
-    if (requestStoragePermission()) {
+    PermissionStatus permission = await Permission.storage.request();
+    if (permission.isGranted) {
       List<Map<String, dynamic>> mapList = [];
 
       for (var city in listOfFavoriteCities) {
@@ -251,14 +252,10 @@ class _MainViewState extends State<MainView> {
     return null;
   }
 
-  requestStoragePermission() async {
-    PermissionStatus permission = await Permission.storage.request();
-    return permission.isGranted;
-  }
-
   Future<String?> _readData() async {
     try {
-      if (requestStoragePermission()) {
+      PermissionStatus permission = await Permission.storage.request();
+      if (permission.isGranted) {
         final file = await _getFile();
         if (file.existsSync()) {
           return file.readAsString();
